@@ -23,7 +23,7 @@ function HousingCard(props: Props) {
                 <CardMedia image={housing.image} sx={{ height: 140 }} />
                 <CardContent>
                     <Typography variant='h6'>
-                        {housing.address}
+                        {housing.name}
                     </Typography>
                     <Typography variant='body1'>
                         {housing.surface} m²

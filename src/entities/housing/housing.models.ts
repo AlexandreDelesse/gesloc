@@ -1,5 +1,6 @@
 export interface Housing {
     id: string,
+    name: string,
     owner: string, //TODO: A changer en objet
     address: string //TODO: A changer en objet
     surface: number,
@@ -7,6 +8,7 @@ export interface Housing {
 }
 
 export interface CreateHousingCmd {
+    name: string,
     owner: string, //TODO: A changer en objet
     address: string //TODO: A changer en objet
     surface: number,
