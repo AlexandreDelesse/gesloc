@@ -3,13 +3,17 @@ import type { Housing } from '../housing.models'
 
 interface Props {
     housing: Housing
+    onClick?: (h: Housing) => void
 }
 
 function HousingCard(props: Props) {
-    const { housing } = props
+    const { housing, onClick } = props
 
     const handleOnCardClick = () => {
-        alert("Clicked on card : " + housing.address)
+        if (onClick)
+            onClick(housing)
+        else
+            alert("Clicked on card : " + housing.address)
     }
 
     return (

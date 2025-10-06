@@ -7,9 +7,13 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import HomePage from './pages/HomePage'
+import { BrowserRouter } from 'react-router';
+import AppRoutes from './routing/AppRoutes';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HomePage />
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   </StrictMode>,
 )
