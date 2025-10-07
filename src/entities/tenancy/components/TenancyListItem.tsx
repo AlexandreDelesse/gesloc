@@ -1,13 +1,12 @@
 import type { Tenancy } from "../tenancy.model";
 import {
   Avatar,
-  IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Typography,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MoreMenu from "./MoreMenu";
 
 interface Props {
   tenancy: Tenancy;
@@ -18,16 +17,8 @@ function TenancyListItem(props: Props) {
 
   const tenancyDurationFormatted = `${tenancy.tenancyDuration} mois`;
 
-  const handleActionClick = () => alert("Ce bouton ne fait rien !");
-
   return (
-    <ListItem
-      secondaryAction={
-        <IconButton onClick={handleActionClick}>
-          <MoreVertIcon sx={{ color: "whitesmoke" }} />
-        </IconButton>
-      }
-    >
+    <ListItem secondaryAction={<MoreMenu />}>
       <ListItemAvatar>
         <Avatar>{tenancy.tenant[0]}</Avatar>
       </ListItemAvatar>
