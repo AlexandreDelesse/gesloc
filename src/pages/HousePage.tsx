@@ -1,8 +1,9 @@
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { Navigate, useParams } from "react-router";
 import { getHouseById } from "../entities/housing/housing.repository";
 import HousingInformations from "../entities/housing/components/HousingInformations";
 import TenancyList from "../entities/tenancy/components/TenancyList";
+import CurrentTenancy from "../entities/tenancy/components/CurrentTenancy";
 
 interface Props {}
 
@@ -23,8 +24,11 @@ function HousePage(props: Props) {
 
       <Stack direction={"row"} gap={2}>
         <HousingInformations house={house} />
-        <TenancyList houseId={house.id} />
+        <CurrentTenancy house={house} />
       </Stack>
+      <Box my={2}>
+        <TenancyList houseId={house.id} />
+      </Box>
     </Container>
   );
 }

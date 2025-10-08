@@ -15,7 +15,10 @@ function HousingInformations(props: Props) {
   return (
     <SimpleFlexCard>
       <Stack gap={2}>
-        <DisplayInformation title="Proprietaire" content={house.owner} />
+        <DisplayInformation
+          title="Proprietaire"
+          content={house.owner.fullName || house.owner.firstName}
+        />
         <DisplayInformation title="Adresse" content={house.address} />
         <DisplayInformation title="Surface" content={surfaceFormatted} />
       </Stack>

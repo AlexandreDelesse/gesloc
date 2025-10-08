@@ -15,9 +15,9 @@ function TenancyList(props: Props) {
   const isListEmpty = tenancies.length < 1;
 
   return (
-    <SimpleFlexCard>
+    <SimpleFlexCard title="Historique des locataires">
       {isListEmpty ? (
-        <Typography variant="h6" my={3} textAlign={"center"}>
+        <Typography my={3} textAlign={"center"}>
           Pas de locataire
         </Typography>
       ) : (
