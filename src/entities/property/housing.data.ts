@@ -1,4 +1,4 @@
-import type { Housing } from "./housing.models";
+import type { Housing } from "./property.model";
 import img from "../../assets/images.jpg";
 import img2 from "../../assets/Carqueiranne.jpg";
 

@@ -29,7 +29,7 @@ function QuittancePDF(props: Props) {
       <Page style={styles.page} size="A4">
         {/* Titre du document */}
         <Text style={styles.title}>
-          Quittance de loyer du mois de septembre 2025
+          Quittance de loyer octobre 2025
         </Text>
 
         {/* Section proprietaire */}
@@ -60,7 +60,7 @@ function QuittancePDF(props: Props) {
           Je soussigné NOTARIANNI Chantal propriétaire du logement désigné
           ci-dessus, déclare avoir reçu de Madame TUIZIR Elisa, la somme de 800
           euros (Huit cents euros), au titre du paiement du loyer et des charges
-          pour la période de location du 01/09/2025 au 30/09/2025 et lui en
+          pour la période de location du 01/10/2025 au 31/10/2025 et lui en
           donne quittance, sous réserve de tous mes droits.
         </Text>
 
@@ -70,7 +70,7 @@ function QuittancePDF(props: Props) {
           <Text>Loyer : 750€</Text>
           <Text>Charges : 50€ </Text>
           <Text style={{...styles.subTitles, marginTop: 8}}>Total : 800€</Text>
-          <Text>Date du paiement : 01/09/2025</Text>
+          <Text>Date du paiement : 01/10/2025</Text>
         </View>
       </Page>
     </Document>

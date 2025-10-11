@@ -4,13 +4,13 @@ import { getTenancyByHouse } from "../tenancy.repository";
 import TenancyListItem from "./TenancyListItem";
 
 interface Props {
-  houseId: string;
+  propertyId: string;
 }
 
 function TenancyList(props: Props) {
-  const { houseId } = props;
+  const { propertyId } = props;
 
-  const tenancies = getTenancyByHouse(houseId);
+  const tenancies = getTenancyByHouse(propertyId);
   const isLastIndex = (i: number) => i === tenancies.length - 1;
   const isListEmpty = tenancies.length < 1;
 

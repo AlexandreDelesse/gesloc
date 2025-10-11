@@ -1,8 +1,9 @@
-import { Container, Typography } from "@mui/material";
-import type { Housing } from "../entities/housing/housing.models";
-import HousingCardList from "../entities/housing/components/HousingCardList";
+import { Button, Container, Stack, Typography } from "@mui/material";
+import HousingCardList from "../entities/property/components/PropertyCardList";
 import { useNavigate } from "react-router";
-import { getHouses } from "../entities/housing/housing.repository";
+import type { Property } from "../entities/property/property.model";
+import { localPropertyRepository } from "../entities/property/localProperty.repository";
+import AddIcon from "@mui/icons-material/Add";
 
 interface Props {}
 
@@ -10,20 +11,29 @@ function HomePage(props: Props) {
   const {} = props;
   const navigate = useNavigate();
 
-  const houses: Housing[] = getHouses();
+  const properties: Property[] = localPropertyRepository.getProperties();
 
-  const handleOnHouseClick = (h: Housing) => {
-    navigate(`house/${h.id}`);
+  const handleOnHouseClick = (p: Property) => {
+    navigate(`property/${p.id}`);
   };
+
+  const handleNewPropertyClick = () => navigate("create-property");
 
   //TODO: Faire un composant Page réutilisable pour que les pages soient cohérentes.
   return (
     <Container>
-      <Typography variant="h2" my={2}>
-        Logements
-      </Typography>
+      <Stack direction="row" gap={2} my={2} alignItems="baseline">
+        <Typography variant="h2">Logements</Typography>
+        <Button
+          variant="outlined"
+          startIcon={<AddIcon />}
+          onClick={handleNewPropertyClick}
+        >
+          Ajouter
+        </Button>
+      </Stack>
 
-      <HousingCardList houses={houses} onClick={handleOnHouseClick} />
+      <HousingCardList properties={properties} onClick={handleOnHouseClick} />
     </Container>
   );
 }

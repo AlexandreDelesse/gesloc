@@ -1,36 +1,37 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Navigate, useParams } from "react-router";
-import { getHouseById } from "../entities/housing/housing.repository";
-import HousingInformations from "../entities/housing/components/HousingInformations";
+import HousingInformations from "../entities/property/components/PropertyInformations";
 import TenancyList from "../entities/tenancy/components/TenancyList";
 import CurrentTenancy from "../entities/tenancy/components/CurrentTenancy";
+import { localPropertyRepository } from "../entities/property/localProperty.repository";
+import PropertyInformations from "../entities/property/components/PropertyInformations";
 
 interface Props {}
 
-function HousePage(props: Props) {
+function PropertyPage(props: Props) {
   const {} = props;
   const { id } = useParams();
-  const house = getHouseById(id!);
+  const property = localPropertyRepository.getPropertyById(id!);
 
   //TODO: Remplacer le navigate par un bloc d'information "ID n'existe pas" + Boutton retour au menu
-  if (!house) return <Navigate to={"/"} replace />;
+  if (!property) return <Navigate to={"/"} replace />;
 
   //TODO: Ajouter un bouton de retour
   return (
     <Container>
       <Typography variant="h2" my={2}>
-        {house.name}
+        {property.name}
       </Typography>
 
       <Stack direction={"row"} gap={2}>
-        <HousingInformations house={house} />
-        <CurrentTenancy house={house} />
+        <PropertyInformations property={property} />
+        <CurrentTenancy property={property} />
       </Stack>
       <Box my={2}>
-        <TenancyList houseId={house.id} />
+        <TenancyList propertyId={property.id} />
       </Box>
     </Container>
   );
 }
 
-export default HousePage;
+export default PropertyPage;

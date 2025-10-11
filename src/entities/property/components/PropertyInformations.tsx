@@ -1,29 +1,29 @@
 import { Stack } from "@mui/material";
 import SimpleFlexCard from "../../../shared/components/containers/SimpleFlexCard";
 import DisplayInformation from "../../../shared/components/dataDisplay/displayInformation";
-import type { Housing } from "../housing.models";
+import type { Property } from "../property.model";
 
 interface Props {
-  house: Housing;
+  property: Property;
 }
 
-function HousingInformations(props: Props) {
-  const { house } = props;
+function PropertyInformations(props: Props) {
+  const { property } = props;
 
-  const surfaceFormatted = `${house.surface} m²`;
+  const surfaceFormatted = `${property.surface} m²`;
 
   return (
     <SimpleFlexCard>
       <Stack gap={2}>
         <DisplayInformation
           title="Proprietaire"
-          content={house.owner.fullName || house.owner.firstName}
+          content={property.owner.fullName || property.owner.firstName}
         />
-        <DisplayInformation title="Adresse" content={house.address} />
+        <DisplayInformation title="Adresse" content={property.address.street} />
         <DisplayInformation title="Surface" content={surfaceFormatted} />
       </Stack>
     </SimpleFlexCard>
   );
 }
 
-export default HousingInformations;
+export default PropertyInformations;

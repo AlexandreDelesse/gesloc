@@ -1,6 +1,6 @@
 //TODO: Ajouter le concept de personne pour regrouper, proprietaire, locataire. 
 
-import type { Housing } from "../housing/housing.models";
+import type { Housing } from "../property/property.model";
 
 //TODO: Agrémenter le concept de bail au fur et a mesure. 1ere version incomplete. 
 export interface Tenancy {
