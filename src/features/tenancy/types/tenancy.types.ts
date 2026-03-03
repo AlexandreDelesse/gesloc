@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { personSchema } from '../../../types/person.types';
 
+// Statut du bail
+export const tenancyStatusSchema = z.enum(['brouillon', 'signé']);
+
 // Cadre légal du contrat (loi du 6 juillet 1989 – meublé = titre Ier bis)
 export const rentalFrameworkSchema = z.enum([
   'meublé-loi-89',    // Titre Ier bis – location meublée (notre cas)
@@ -42,6 +45,10 @@ export const tenancySchema = z.object({
 
   // Dépôt de garantie
   securityDeposit: z.number().nonnegative(), // ex: 750 (= 1 mois HC)
+
+  // Statut du bail et document signé
+  status: tenancyStatusSchema.default('brouillon'),
+  signedDocument: z.string().optional(), // base64 du scan PDF signé
 });
 
 // ─── Commandes ───────────────────────────────────────────────────────────────
@@ -55,6 +62,7 @@ export const updateTenancySchema = createTenancySchema.partial().extend({
 // ─── Types inférés ───────────────────────────────────────────────────────────
 
 export type Tenancy = z.infer<typeof tenancySchema>;
+export type TenancyStatus = z.infer<typeof tenancyStatusSchema>;
 export type CreateTenancyData = z.infer<typeof createTenancySchema>;
 export type UpdateTenancyData = z.infer<typeof updateTenancySchema>;
 
