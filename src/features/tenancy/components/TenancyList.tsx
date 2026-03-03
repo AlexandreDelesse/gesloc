@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import type { Tenancy } from '../types/tenancy.types';
 import TenancyCard from './TenancyCard';
 
@@ -15,11 +15,13 @@ const TenancyList = ({ tenancies, onTenancyClick }: Props) => {
   }
 
   return (
-    <Stack direction="row" flexWrap="wrap" gap={3}>
+    <Grid container spacing={3}>
       {tenancies.map((tenancy) => (
-        <TenancyCard key={tenancy.id} tenancy={tenancy} onClick={onTenancyClick} />
+        <Grid key={tenancy.id} size={{ xs: 12, sm: 6, md: 4 }}>
+          <TenancyCard tenancy={tenancy} onClick={onTenancyClick} />
+        </Grid>
       ))}
-    </Stack>
+    </Grid>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
-import { Box, Button, FormGroup, Stack, Typography, Alert } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography, Alert } from '@mui/material';
 import { createPropertySchema } from '../types/property.types';
 import type { CreatePropertyData, Property } from '../types/property.types';
 import type { Address } from '../../../types/address.types';
@@ -55,7 +55,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
   };
 
   return (
-    <FormGroup sx={{ bgcolor: 'grey.100', p: 3, borderRadius: 2 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
       <Typography variant="subtitle1" color="text.secondary" mb={1}>
         Informations
       </Typography>
@@ -63,7 +63,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Stack gap={2}>
-        <Stack gap={2} direction="row">
+        <Stack gap={2} direction={{ xs: 'column', sm: 'row' }}>
           <SmallInput
             name="name"
             label="Nom du bien"
@@ -119,7 +119,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
           Annuler
         </Button>
       </Stack>
-    </FormGroup>
+    </Paper>
   );
 };
 

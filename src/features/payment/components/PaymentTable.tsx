@@ -1,13 +1,18 @@
 import {
   Button,
+  Card,
+  CardContent,
   Chip,
   CircularProgress,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -37,6 +42,9 @@ const formatDate = (isoDate: string) =>
   });
 
 const PaymentTable = ({ tenancyId, tenancy, property }: Props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { data: payments, isLoading } = usePaymentsByTenancy(tenancyId);
   const { mutate: updatePayment, isPending: isUpdating } = useUpdatePayment(tenancyId);
 
@@ -73,8 +81,63 @@ const PaymentTable = ({ tenancyId, tenancy, property }: Props) => {
     return <Chip label="En attente" color="warning" size="small" />;
   };
 
+  const getActions = (payment: Payment) => (
+    <Stack direction="row" gap={1} flexWrap="wrap">
+      {payment.status !== 'payé' && (
+        <Button
+          size="small"
+          variant="outlined"
+          color="success"
+          startIcon={<CheckCircleIcon />}
+          onClick={() => handleMarkPaid(payment)}
+          disabled={isUpdating}
+        >
+          Payé
+        </Button>
+      )}
+      {payment.status === 'payé' && (
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<ReceiptIcon />}
+          onClick={() => handleDownloadQuittance(payment)}
+          disabled={!property}
+        >
+          Quittance
+        </Button>
+      )}
+    </Stack>
+  );
+
   // Sort by period ascending
   const sorted = [...payments].sort((a, b) => a.period.localeCompare(b.period));
+
+  if (isMobile) {
+    return (
+      <Stack gap={2}>
+        {sorted.map((payment) => (
+          <Card key={payment.id} variant="outlined">
+            <CardContent>
+              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                <Typography fontWeight="bold">{formatPeriod(payment.period)}</Typography>
+                {getStatusChip(payment)}
+              </Stack>
+              <Typography variant="body2" color="text.secondary">
+                Loyer HC : {payment.rentAmount} € · Charges : {payment.chargesAmount} €
+              </Typography>
+              <Typography variant="body2" fontWeight="bold">
+                Total : {getPaymentTotal(payment)} €
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mb={1}>
+                Échéance : {formatDate(payment.dueDate)}
+              </Typography>
+              {getActions(payment)}
+            </CardContent>
+          </Card>
+        ))}
+      </Stack>
+    );
+  }
 
   return (
     <Table size="small">
@@ -100,32 +163,7 @@ const PaymentTable = ({ tenancyId, tenancy, property }: Props) => {
             </TableCell>
             <TableCell>{formatDate(payment.dueDate)}</TableCell>
             <TableCell>{getStatusChip(payment)}</TableCell>
-            <TableCell>
-              {payment.status !== 'payé' && (
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="success"
-                  startIcon={<CheckCircleIcon />}
-                  onClick={() => handleMarkPaid(payment)}
-                  disabled={isUpdating}
-                  sx={{ mr: 1 }}
-                >
-                  Payé
-                </Button>
-              )}
-              {payment.status === 'payé' && (
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<ReceiptIcon />}
-                  onClick={() => handleDownloadQuittance(payment)}
-                  disabled={!property}
-                >
-                  Quittance
-                </Button>
-              )}
-            </TableCell>
+            <TableCell>{getActions(payment)}</TableCell>
           </TableRow>
         ))}
       </TableBody>

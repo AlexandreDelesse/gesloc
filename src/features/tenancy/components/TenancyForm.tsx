@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormGroup,
   MenuItem,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -86,7 +87,7 @@ const TenancyForm = ({
   };
 
   return (
-    <FormGroup sx={{ bgcolor: 'grey.100', p: 3, borderRadius: 2 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Stack gap={3}>
@@ -95,7 +96,7 @@ const TenancyForm = ({
           <Typography variant="subtitle1" color="text.secondary" mb={1}>
             Cadre légal
           </Typography>
-          <Stack direction="row" gap={2}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
             <TextField
               select
               size="small"
@@ -157,7 +158,7 @@ const TenancyForm = ({
           <Typography variant="subtitle1" color="text.secondary" mb={1}>
             Durée du bail
           </Typography>
-          <Stack direction="row" gap={2}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
             <SmallInput
               type="date"
               name="startDate"
@@ -247,7 +248,7 @@ const TenancyForm = ({
           Annuler
         </Button>
       </Stack>
-    </FormGroup>
+    </Paper>
   );
 };
 
