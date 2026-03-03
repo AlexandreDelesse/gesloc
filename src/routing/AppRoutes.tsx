@@ -3,11 +3,7 @@ import HomePage from "../pages/HomePage";
 import CreatePropertyPage from "../pages/CreatePropertyPage";
 import PropertyPage from "../pages/PropertyPage";
 
-interface Props {}
-
-function AppRoutes(props: Props) {
-  const {} = props;
-
+const AppRoutes = () => {
   return (
     <Routes>
       <Route index element={<HomePage />} />
