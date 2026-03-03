@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import PageLayout from '../components/layout/PageLayout';
 import PropertyDetails from '../features/property/components/PropertyDetails';
 import PropertyForm from '../features/property/components/PropertyForm';
@@ -12,6 +13,9 @@ import { useProperty } from '../features/property/hooks/useProperty';
 import { useUpdateProperty } from '../features/property/hooks/useUpdateProperty';
 import { useDeleteProperty } from '../features/property/hooks/useDeleteProperty';
 import type { CreatePropertyData } from '../features/property/types/property.types';
+import { useTenanciesByProperty } from '../features/tenancy/hooks/useTenanciesByProperty';
+import TenancyList from '../features/tenancy/components/TenancyList';
+import type { Tenancy } from '../features/tenancy/types/tenancy.types';
 
 const PropertyPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +27,10 @@ const PropertyPage = () => {
   const { data: property, isLoading, isError } = useProperty(id!);
   const { mutate: updateProperty, isPending: isUpdating } = useUpdateProperty(id!);
   const { mutate: deleteProperty, isPending: isDeleting } = useDeleteProperty();
+  const { data: tenancies = [] } = useTenanciesByProperty(id!);
+
+  const handleTenancyClick = (tenancy: Tenancy) =>
+    navigate(`/property/${id}/tenancy/${tenancy.id}`);
 
   const handleUpdate = (data: CreatePropertyData) => {
     updateProperty(
@@ -88,6 +96,21 @@ const PropertyPage = () => {
             </Stack>
           </>
         )}
+      </Paper>
+
+      <Paper sx={{ p: 3, mt: 3 }}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h6">Baux de location</Typography>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={() => navigate(`/property/${id}/tenancy/new`)}
+          >
+            Nouveau bail
+          </Button>
+        </Box>
+        <TenancyList tenancies={tenancies} onTenancyClick={handleTenancyClick} />
       </Paper>
 
       <DeletePropertyDialog
