@@ -15,6 +15,15 @@ const TenancyCard = ({ tenancy, onClick }: Props) => {
   const endDate = getTenancyEndDate(tenancy);
   const total = getTotalMonthlyAmount(tenancy);
 
+  const chipLabel =
+    tenancy.status === 'brouillon'
+      ? 'Brouillon'
+      : active
+        ? 'Signé · Actif'
+        : 'Signé · Terminé';
+  const chipColor =
+    tenancy.status === 'brouillon' ? 'warning' : active ? 'success' : 'default';
+
   return (
     <Card sx={{ width: 300 }}>
       <CardActionArea onClick={() => onClick(tenancy)}>
@@ -23,11 +32,7 @@ const TenancyCard = ({ tenancy, onClick }: Props) => {
             <Typography variant="h6">
               {tenancy.tenant.firstName} {tenancy.tenant.lastName}
             </Typography>
-            <Chip
-              label={active ? 'Actif' : 'Terminé'}
-              color={active ? 'success' : 'default'}
-              size="small"
-            />
+            <Chip label={chipLabel} color={chipColor} size="small" />
           </Stack>
           <Typography variant="body2" color="text.secondary">
             {formatDate(tenancy.startDate)} → {formatDate(endDate.toISOString().split('T')[0])}

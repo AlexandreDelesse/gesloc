@@ -27,5 +27,6 @@ export const mockTenancies: Tenancy[] = [
     chargesType: 'forfait',
     paymentDueDay: 5,
     securityDeposit: 750,
+    status: 'brouillon',
   },
 ];

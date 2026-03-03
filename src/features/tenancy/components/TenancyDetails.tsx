@@ -24,6 +24,11 @@ const TenancyDetails = ({ tenancy }: Props) => {
     <Stack gap={1}>
       <Stack direction="row" alignItems="center" gap={1}>
         <Chip
+          label={tenancy.status === 'signé' ? 'Signé' : 'Brouillon'}
+          color={tenancy.status === 'signé' ? 'info' : 'warning'}
+          size="small"
+        />
+        <Chip
           label={active ? 'Actif' : 'Terminé'}
           color={active ? 'success' : 'default'}
           size="small"
