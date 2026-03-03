@@ -39,7 +39,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
   const handleSubmit = () => {
     const result = createPropertySchema.safeParse(values);
     if (!result.success) {
-      setError(result.error.errors[0].message);
+      setError(result.error.issues[0].message);
       return;
     }
     setError(null);

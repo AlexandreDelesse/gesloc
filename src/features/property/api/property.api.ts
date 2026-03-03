@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { mockProperties } from './property.mock';
-import { CreatePropertyData, Property, UpdatePropertyData } from '../types/property.types';
+import type { CreatePropertyData, Property, UpdatePropertyData } from '../types/property.types';
 
 // État local simulant la base de données — remplacé par axios quand l'API sera prête
 let store: Property[] = [...mockProperties];

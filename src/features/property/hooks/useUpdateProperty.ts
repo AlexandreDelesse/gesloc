@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { propertyApi } from '../api/property.api';
-import { UpdatePropertyData } from '../types/property.types';
+import type { UpdatePropertyData } from '../types/property.types';
 import { PROPERTIES_QUERY_KEY } from './useProperties';
 import { propertyQueryKey } from './useProperty';
 

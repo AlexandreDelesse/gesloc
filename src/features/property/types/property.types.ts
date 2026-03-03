@@ -15,7 +15,7 @@ export const createPropertySchema = z.object({
   name: z.string().min(1, 'Le nom du bien est requis'),
   owner: personSchema,
   address: addressSchema,
-  surface: z.number({ invalid_type_error: 'La surface doit être un nombre' }).positive('La surface doit être positive'),
+  surface: z.number({ error: 'La surface doit être un nombre' }).positive('La surface doit être positive'),
   image: z.string().optional(),
 });
 

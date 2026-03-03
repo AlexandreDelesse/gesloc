@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface PageLayoutProps {
   title: string;
