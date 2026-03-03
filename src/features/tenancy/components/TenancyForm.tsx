@@ -30,6 +30,7 @@ const EMPTY_VALUES: CreateTenancyData = {
   chargesType: 'forfait',
   paymentDueDay: 5,
   securityDeposit: 0,
+  status: 'brouillon',
 };
 
 interface Props {
