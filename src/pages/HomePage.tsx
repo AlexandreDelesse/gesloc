@@ -1,41 +1,33 @@
-import { Button, Container, Stack, Typography } from "@mui/material";
-import HousingCardList from "../entities/property/components/PropertyCardList";
-import { useNavigate } from "react-router";
-import type { Property } from "../entities/property/property.model";
-import { localPropertyRepository } from "../entities/property/localProperty.repository";
-import AddIcon from "@mui/icons-material/Add";
+import { Button, CircularProgress, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
+import AddIcon from '@mui/icons-material/Add';
+import PageLayout from '../components/layout/PageLayout';
+import PropertyCardList from '../features/property/components/PropertyCardList';
+import { useProperties } from '../features/property/hooks/useProperties';
+import type { Property } from '../features/property/types/property.types';
 
-interface Props {}
-
-function HomePage(props: Props) {
-  const {} = props;
+const HomePage = () => {
   const navigate = useNavigate();
+  const { data: properties, isLoading, isError } = useProperties();
 
-  const properties: Property[] = localPropertyRepository.getProperties();
+  const handlePropertyClick = (property: Property) => navigate(`/property/${property.id}`);
 
-  const handleOnHouseClick = (p: Property) => {
-    navigate(`property/${p.id}`);
-  };
-
-  const handleNewPropertyClick = () => navigate("create-property");
-
-  //TODO: Faire un composant Page réutilisable pour que les pages soient cohérentes.
   return (
-    <Container>
-      <Stack direction="row" gap={2} my={2} alignItems="baseline">
-        <Typography variant="h2">Logements</Typography>
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={handleNewPropertyClick}
-        >
+    <PageLayout
+      title="Mes biens"
+      actions={
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => navigate('/create-property')}>
           Ajouter
         </Button>
-      </Stack>
-
-      <HousingCardList properties={properties} onClick={handleOnHouseClick} />
-    </Container>
+      }
+    >
+      {isLoading && <CircularProgress />}
+      {isError && <Typography color="error">Impossible de charger les biens.</Typography>}
+      {properties && (
+        <PropertyCardList properties={properties} onPropertyClick={handlePropertyClick} />
+      )}
+    </PageLayout>
   );
-}
+};
 
 export default HomePage;

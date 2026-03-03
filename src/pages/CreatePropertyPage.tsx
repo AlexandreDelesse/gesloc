@@ -1,17 +1,29 @@
-import { Container, Typography } from "@mui/material";
-import CreatePropertyForm from "../entities/property/components/CreatePropertyForm";
+import { useNavigate } from 'react-router';
+import PageLayout from '../components/layout/PageLayout';
+import PropertyForm from '../features/property/components/PropertyForm';
+import { useCreateProperty } from '../features/property/hooks/useCreateProperty';
+import type { CreatePropertyData } from '../features/property/types/property.types';
 
-interface Props {}
+const CreatePropertyPage = () => {
+  const navigate = useNavigate();
+  const { mutate: createProperty, isPending } = useCreateProperty();
 
-function CreatePropertyPage(props: Props) {
-  const {} = props;
+  const handleSubmit = (data: CreatePropertyData) => {
+    createProperty(data, {
+      onSuccess: (created) => navigate(`/property/${created.id}`),
+    });
+  };
 
   return (
-    <Container>
-      <Typography variant="h2">Nouveau logement</Typography>
-      <CreatePropertyForm />
-    </Container>
+    <PageLayout title="Nouveau bien">
+      <PropertyForm
+        onSubmit={handleSubmit}
+        onCancel={() => navigate(-1)}
+        isLoading={isPending}
+        submitLabel="Ajouter"
+      />
+    </PageLayout>
   );
-}
+};
 
 export default CreatePropertyPage;

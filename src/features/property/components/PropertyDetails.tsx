@@ -1,0 +1,33 @@
+import { Stack, Typography } from '@mui/material';
+import type { Property } from '../types/property.types';
+
+interface Props {
+  property: Property;
+}
+
+const PropertyDetails = ({ property }: Props) => {
+  const { owner, address, surface } = property;
+  const ownerName = `${owner.firstName} ${owner.lastName}`;
+  const addressLine = `${address.number ? address.number + ' ' : ''}${address.street}, ${address.postCode} ${address.city}`;
+
+  return (
+    <Stack gap={1}>
+      <Typography variant="body1">
+        <strong>Propriétaire :</strong> {ownerName}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Adresse :</strong> {addressLine}
+      </Typography>
+      {address.residence && (
+        <Typography variant="body1">
+          <strong>Résidence :</strong> {address.residence}
+        </Typography>
+      )}
+      <Typography variant="body1">
+        <strong>Surface :</strong> {surface} m²
+      </Typography>
+    </Stack>
+  );
+};
+
+export default PropertyDetails;
