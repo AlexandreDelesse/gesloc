@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
-import { Button, FormGroup, Stack, Typography, Alert } from '@mui/material';
+import { Box, Button, FormGroup, Stack, Typography, Alert } from '@mui/material';
 import { createPropertySchema } from '../types/property.types';
 import type { CreatePropertyData, Property } from '../types/property.types';
 import type { Address } from '../../../types/address.types';
@@ -31,6 +31,14 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: name === 'surface' ? Number(value) : value }));
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setValues((prev) => ({ ...prev, image: reader.result as string }));
+    reader.readAsDataURL(file);
   };
 
   const handleAddressChange = (address: Address) => setValues((prev) => ({ ...prev, address }));
@@ -73,6 +81,34 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
 
         <AddressForm address={values.address} onChange={handleAddressChange} />
         <OwnerForm owner={values.owner} onChange={handleOwnerChange} />
+
+        <Box>
+          <Typography variant="subtitle1" color="text.secondary" mb={1}>
+            Photo de couverture
+          </Typography>
+          {values.image && (
+            <Box
+              component="img"
+              src={values.image}
+              sx={{ width: '100%', maxHeight: 200, objectFit: 'cover', borderRadius: 1, mb: 1 }}
+            />
+          )}
+          <Stack direction="row" gap={1}>
+            <Button variant="outlined" size="small" component="label">
+              {values.image ? 'Changer la photo' : 'Ajouter une photo'}
+              <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+            </Button>
+            {values.image && (
+              <Button
+                size="small"
+                color="error"
+                onClick={() => setValues((prev) => ({ ...prev, image: '' }))}
+              >
+                Supprimer
+              </Button>
+            )}
+          </Stack>
+        </Box>
       </Stack>
 
       <Stack direction="row" gap={2} mt={3}>
