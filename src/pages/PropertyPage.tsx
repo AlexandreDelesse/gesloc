@@ -69,7 +69,7 @@ const PropertyPage = () => {
         </Button>
       }
     >
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         {isEditing ? (
           <PropertyForm
             initialValues={property}
@@ -98,7 +98,7 @@ const PropertyPage = () => {
         )}
       </Paper>
 
-      <Paper sx={{ p: 3, mt: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 }, mt: 3 }}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h6">Baux de location</Typography>
           <Button

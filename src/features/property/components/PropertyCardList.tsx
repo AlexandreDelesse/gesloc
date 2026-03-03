@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Grid } from '@mui/material';
 import type { Property } from '../types/property.types';
 import PropertyCard from './PropertyCard';
 
@@ -8,11 +8,13 @@ interface Props {
 }
 
 const PropertyCardList = ({ properties, onPropertyClick }: Props) => (
-  <Stack direction="row" flexWrap="wrap" gap={3}>
+  <Grid container spacing={3}>
     {properties.map((property) => (
-      <PropertyCard key={property.id} property={property} onClick={onPropertyClick} />
+      <Grid key={property.id} size={{ xs: 12, sm: 6, md: 4 }}>
+        <PropertyCard property={property} onClick={onPropertyClick} />
+      </Grid>
     ))}
-  </Stack>
+  </Grid>
 );
 
 export default PropertyCardList;

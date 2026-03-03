@@ -25,7 +25,7 @@ const TenancyCard = ({ tenancy, onClick }: Props) => {
     tenancy.status === 'brouillon' ? 'warning' : active ? 'success' : 'default';
 
   return (
-    <Card sx={{ width: 300 }}>
+    <Card sx={{ width: '100%' }}>
       <CardActionArea onClick={() => onClick(tenancy)}>
         <CardContent>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0.5}>

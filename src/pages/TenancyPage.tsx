@@ -118,7 +118,7 @@ const TenancyPage = () => {
         </Button>
       }
     >
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         {isEditing ? (
           <TenancyForm
             initialValues={tenancy}
@@ -182,7 +182,7 @@ const TenancyPage = () => {
       </Paper>
 
       {isSigned && !isEditing && (
-        <Paper sx={{ p: 3, mt: 3 }}>
+        <Paper sx={{ p: { xs: 2, sm: 3 }, mt: 3 }}>
           <Typography variant="h6" mb={2}>
             Suivi des paiements
           </Typography>

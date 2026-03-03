@@ -28,6 +28,9 @@ const PageLayout = ({ title, actions, children }: PageLayoutProps) => (
         >
           Gesloc
         </Typography>
+        <Typography variant="caption" color="text.disabled" sx={{ ml: 1, mt: 0.5 }}>
+          v{__APP_VERSION__}
+        </Typography>
       </Toolbar>
     </AppBar>
     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 }, px: { xs: 2, md: 3 } }}>
