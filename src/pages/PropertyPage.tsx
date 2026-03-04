@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Box, Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -65,19 +65,9 @@ const PropertyPage = () => {
     <PageLayout
       title={property.name}
       actions={
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/')}>
-            Retour
-          </Button>
-          {!isEditing && (
-            <ActionsMenu
-              items={[
-                { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
-                { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
-              ]}
-            />
-          )}
-        </Stack>
+        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/')}>
+          Retour
+        </Button>
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
@@ -90,7 +80,17 @@ const PropertyPage = () => {
             submitLabel="Enregistrer"
           />
         ) : (
-          <PropertyDetails property={property} />
+          <>
+            <Box display="flex" justifyContent="flex-end" mb={1}>
+              <ActionsMenu
+                items={[
+                  { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
+                  { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
+                ]}
+              />
+            </Box>
+            <PropertyDetails property={property} />
+          </>
         )}
       </Paper>
 

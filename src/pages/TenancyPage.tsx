@@ -118,23 +118,9 @@ const TenancyPage = () => {
     <PageLayout
       title={tenantName}
       actions={
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/property/${propertyId}`)}>
-            Retour
-          </Button>
-          {!isSigned && !isEditing && (
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              startIcon={<GavelIcon />}
-              onClick={() => setSignDialogOpen(true)}
-            >
-              Signer
-            </Button>
-          )}
-          {!isEditing && <ActionsMenu items={menuItems} />}
-        </Stack>
+        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/property/${propertyId}`)}>
+          Retour
+        </Button>
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
@@ -147,7 +133,23 @@ const TenancyPage = () => {
             submitLabel="Enregistrer"
           />
         ) : (
-          <TenancyDetails tenancy={tenancy} />
+          <>
+            <Box display="flex" justifyContent="flex-end" alignItems="center" gap={1} mb={1}>
+              {!isSigned && (
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  startIcon={<GavelIcon />}
+                  onClick={() => setSignDialogOpen(true)}
+                >
+                  Signer
+                </Button>
+              )}
+              <ActionsMenu items={menuItems} />
+            </Box>
+            <TenancyDetails tenancy={tenancy} />
+          </>
         )}
       </Paper>
 
