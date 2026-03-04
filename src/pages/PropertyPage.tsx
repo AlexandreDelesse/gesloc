@@ -5,6 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import LinkIcon from '@mui/icons-material/Link';
 import PageLayout from '../components/layout/PageLayout';
 import ActionsMenu from '../components/ui/ActionsMenu';
 import PropertyDetails from '../features/property/components/PropertyDetails';
@@ -17,6 +18,10 @@ import type { CreatePropertyData } from '../features/property/types/property.typ
 import { useTenanciesByProperty } from '../features/tenancy/hooks/useTenanciesByProperty';
 import TenancyList from '../features/tenancy/components/TenancyList';
 import type { Tenancy } from '../features/tenancy/types/tenancy.types';
+import { useCandidates } from '../features/candidate/hooks/useCandidates';
+import CandidateList from '../features/candidate/components/CandidateList';
+import CandidateLinkDialog from '../features/candidate/components/CandidateLinkDialog';
+import type { Candidate } from '../features/candidate/types/candidate.types';
 
 const PropertyPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,14 +29,19 @@ const PropertyPage = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
 
   const { data: property, isLoading, isError } = useProperty(id!);
   const { mutate: updateProperty, isPending: isUpdating } = useUpdateProperty(id!);
   const { mutate: deleteProperty, isPending: isDeleting } = useDeleteProperty();
   const { data: tenancies = [] } = useTenanciesByProperty(id!);
+  const { data: candidates = [] } = useCandidates(id!);
 
   const handleTenancyClick = (tenancy: Tenancy) =>
     navigate(`/property/${id}/tenancy/${tenancy.id}`);
+
+  const handleCandidateClick = (candidate: Candidate) =>
+    navigate(`/property/${id}/candidatures/${candidate.id}`);
 
   const handleUpdate = (data: CreatePropertyData) => {
     updateProperty(
@@ -76,6 +86,7 @@ const PropertyPage = () => {
             <ActionsMenu
               items={[
                 { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
+                { label: 'Lien de candidature', icon: <LinkIcon />, onClick: () => setLinkDialogOpen(true) },
                 { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
               ]}
             />
@@ -91,9 +102,7 @@ const PropertyPage = () => {
             submitLabel="Enregistrer"
           />
         ) : (
-          <>
-            <PropertyDetails property={property} />
-          </>
+          <PropertyDetails property={property} />
         )}
       </Paper>
 
@@ -112,12 +121,41 @@ const PropertyPage = () => {
         <TenancyList tenancies={tenancies} onTenancyClick={handleTenancyClick} />
       </Paper>
 
+      <Paper sx={{ p: { xs: 2, sm: 3 }, mt: 3 }}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h6">
+            Candidatures
+            {candidates.length > 0 && (
+              <Typography component="span" variant="caption" color="text.secondary" ml={1}>
+                ({candidates.length})
+              </Typography>
+            )}
+          </Typography>
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<LinkIcon />}
+            onClick={() => setLinkDialogOpen(true)}
+          >
+            Gérer le lien
+          </Button>
+        </Box>
+        <CandidateList candidates={candidates} onCandidateClick={handleCandidateClick} />
+      </Paper>
+
       <DeletePropertyDialog
         propertyName={property.name}
         open={deleteDialogOpen}
         isLoading={isDeleting}
         onConfirm={handleDelete}
         onClose={() => setDeleteDialogOpen(false)}
+      />
+
+      <CandidateLinkDialog
+        open={linkDialogOpen}
+        onClose={() => setLinkDialogOpen(false)}
+        propertyId={id!}
+        propertyName={property.name}
       />
     </PageLayout>
   );

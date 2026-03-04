@@ -36,6 +36,7 @@ const EMPTY_VALUES: CreateTenancyData = {
 
 interface Props {
   initialValues?: Tenancy;
+  prefilledValues?: Partial<CreateTenancyData>;
   onSubmit: (data: CreateTenancyData) => void;
   onCancel: () => void;
   isLoading?: boolean;
@@ -44,13 +45,20 @@ interface Props {
 
 const TenancyForm = ({
   initialValues,
+  prefilledValues,
   onSubmit,
   onCancel,
   isLoading,
   submitLabel = 'Enregistrer',
 }: Props) => {
-  const [values, setValues] = useState<CreateTenancyData>(initialValues ?? EMPTY_VALUES);
-  const [hasGuarantor, setHasGuarantor] = useState(!!initialValues?.guarantor);
+  const [values, setValues] = useState<CreateTenancyData>({
+    ...EMPTY_VALUES,
+    ...(prefilledValues ?? {}),
+    ...(initialValues ?? {}),
+  });
+  const [hasGuarantor, setHasGuarantor] = useState(
+    !!(initialValues?.guarantor ?? prefilledValues?.guarantor),
+  );
   const [error, setError] = useState<string | null>(null);
 
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -4,6 +4,8 @@ import CreatePropertyPage from "../pages/CreatePropertyPage";
 import PropertyPage from "../pages/PropertyPage";
 import CreateTenancyPage from "../pages/CreateTenancyPage";
 import TenancyPage from "../pages/TenancyPage";
+import CandidatePage from "../pages/CandidatePage";
+import CandidateDetailsPage from "../pages/CandidateDetailsPage";
 
 const AppRoutes = () => {
   return (
@@ -15,7 +17,9 @@ const AppRoutes = () => {
         <Route path=":id" element={<PropertyPage />} />
         <Route path=":id/tenancy/new" element={<CreateTenancyPage />} />
         <Route path=":id/tenancy/:tenancyId" element={<TenancyPage />} />
+        <Route path=":id/candidatures/:candidateId" element={<CandidateDetailsPage />} />
       </Route>
+      <Route path="candidature/:token" element={<CandidatePage />} />
     </Routes>
   );
 }
