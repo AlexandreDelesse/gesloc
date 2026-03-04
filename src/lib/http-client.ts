@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const httpClient = axios.create({
-  baseURL: "http://localhost:5114/api",
+  baseURL: "https://api.gesloc.ade-dev.fr/api",
   timeout: 10000,
 });
