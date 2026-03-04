@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import type { Property } from '../types/property.types';
 
 interface Props {
@@ -6,12 +6,19 @@ interface Props {
 }
 
 const PropertyDetails = ({ property }: Props) => {
-  const { owner, address, surface } = property;
+  const { owner, address, surface, image } = property;
   const ownerName = `${owner.firstName} ${owner.lastName}`;
   const addressLine = `${address.number ? address.number + ' ' : ''}${address.street}, ${address.postCode} ${address.city}`;
 
   return (
     <Stack gap={1}>
+      {image && (
+        <Box
+          component="img"
+          src={image}
+          sx={{ width: '100%', maxHeight: 300, objectFit: 'cover', borderRadius: 1, mb: 1 }}
+        />
+      )}
       <Typography variant="body1">
         <strong>Propriétaire :</strong> {ownerName}
       </Typography>

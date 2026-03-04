@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
-import { Button, FormGroup, Stack, Typography, Alert } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography, Alert } from '@mui/material';
 import { createPropertySchema } from '../types/property.types';
 import type { CreatePropertyData, Property } from '../types/property.types';
 import type { Address } from '../../../types/address.types';
@@ -33,6 +33,14 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
     setValues((prev) => ({ ...prev, [name]: name === 'surface' ? Number(value) : value }));
   };
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setValues((prev) => ({ ...prev, image: reader.result as string }));
+    reader.readAsDataURL(file);
+  };
+
   const handleAddressChange = (address: Address) => setValues((prev) => ({ ...prev, address }));
   const handleOwnerChange = (owner: Person) => setValues((prev) => ({ ...prev, owner }));
 
@@ -47,7 +55,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
   };
 
   return (
-    <FormGroup sx={{ bgcolor: 'grey.100', p: 3, borderRadius: 2 }}>
+    <Paper sx={{ p: { xs: 2, sm: 3 } }}>
       <Typography variant="subtitle1" color="text.secondary" mb={1}>
         Informations
       </Typography>
@@ -55,7 +63,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <Stack gap={2}>
-        <Stack gap={2} direction="row">
+        <Stack gap={2} direction={{ xs: 'column', sm: 'row' }}>
           <SmallInput
             name="name"
             label="Nom du bien"
@@ -73,6 +81,34 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
 
         <AddressForm address={values.address} onChange={handleAddressChange} />
         <OwnerForm owner={values.owner} onChange={handleOwnerChange} />
+
+        <Box>
+          <Typography variant="subtitle1" color="text.secondary" mb={1}>
+            Photo de couverture
+          </Typography>
+          {values.image && (
+            <Box
+              component="img"
+              src={values.image}
+              sx={{ width: '100%', maxHeight: 200, objectFit: 'cover', borderRadius: 1, mb: 1 }}
+            />
+          )}
+          <Stack direction="row" gap={1}>
+            <Button variant="outlined" size="small" component="label">
+              {values.image ? 'Changer la photo' : 'Ajouter une photo'}
+              <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+            </Button>
+            {values.image && (
+              <Button
+                size="small"
+                color="error"
+                onClick={() => setValues((prev) => ({ ...prev, image: '' }))}
+              >
+                Supprimer
+              </Button>
+            )}
+          </Stack>
+        </Box>
       </Stack>
 
       <Stack direction="row" gap={2} mt={3}>
@@ -83,7 +119,7 @@ const PropertyForm = ({ initialValues, onSubmit, onCancel, isLoading, submitLabe
           Annuler
         </Button>
       </Stack>
-    </FormGroup>
+    </Paper>
   );
 };
 

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const PropertyCard = ({ property, onClick }: Props) => (
-  <Card sx={{ width: 340 }}>
+  <Card sx={{ width: '100%' }}>
     <CardActionArea onClick={() => onClick(property)}>
       <CardMedia image={property.image} sx={{ height: 140, bgcolor: 'grey.300' }} />
       <CardContent>
