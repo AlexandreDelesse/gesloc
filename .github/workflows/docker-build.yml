@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - claude/audit-rental-api-4lDAZ
 
 jobs:
   build-and-push:

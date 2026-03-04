@@ -116,7 +116,6 @@ const TenancyPage = () => {
 
   return (
     <PageLayout
-      title={tenantName}
       actions={
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/property/${propertyId}`)}>
           Retour
@@ -124,6 +123,8 @@ const TenancyPage = () => {
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h5" fontWeight="bold" mb={2}>{tenantName}</Typography>
+        <Divider sx={{ mb: 2 }} />
         {isEditing ? (
           <TenancyForm
             initialValues={tenancy}

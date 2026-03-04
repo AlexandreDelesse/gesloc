@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Paper, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -63,7 +63,6 @@ const PropertyPage = () => {
 
   return (
     <PageLayout
-      title={property.name}
       actions={
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/')}>
           Retour
@@ -71,6 +70,8 @@ const PropertyPage = () => {
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h5" fontWeight="bold" mb={2}>{property.name}</Typography>
+        <Divider sx={{ mb: 2 }} />
         {isEditing ? (
           <PropertyForm
             initialValues={property}

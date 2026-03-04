@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import { Button } from '@mui/material';
+import { Button, Divider, Paper, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PageLayout from '../components/layout/PageLayout';
 import TenancyForm from '../features/tenancy/components/TenancyForm';
@@ -20,19 +20,22 @@ const CreateTenancyPage = () => {
 
   return (
     <PageLayout
-      title="Nouveau bail"
       actions={
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/property/${propertyId}`)}>
           Retour
         </Button>
       }
     >
-      <TenancyForm
-        onSubmit={handleSubmit}
-        onCancel={() => navigate(`/property/${propertyId}`)}
-        isLoading={isPending}
-        submitLabel="Créer le bail"
-      />
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h5" fontWeight="bold" mb={2}>Nouveau bail</Typography>
+        <Divider sx={{ mb: 2 }} />
+        <TenancyForm
+          onSubmit={handleSubmit}
+          onCancel={() => navigate(`/property/${propertyId}`)}
+          isLoading={isPending}
+          submitLabel="Créer le bail"
+        />
+      </Paper>
     </PageLayout>
   );
 };

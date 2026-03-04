@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { Divider, Paper, Typography } from '@mui/material';
 import PageLayout from '../components/layout/PageLayout';
 import PropertyForm from '../features/property/components/PropertyForm';
 import { useCreateProperty } from '../features/property/hooks/useCreateProperty';
@@ -15,13 +16,17 @@ const CreatePropertyPage = () => {
   };
 
   return (
-    <PageLayout title="Nouveau bien">
-      <PropertyForm
-        onSubmit={handleSubmit}
-        onCancel={() => navigate(-1)}
-        isLoading={isPending}
-        submitLabel="Ajouter"
-      />
+    <PageLayout>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h5" fontWeight="bold" mb={2}>Nouveau bien</Typography>
+        <Divider sx={{ mb: 2 }} />
+        <PropertyForm
+          onSubmit={handleSubmit}
+          onCancel={() => navigate(-1)}
+          isLoading={isPending}
+          submitLabel="Ajouter"
+        />
+      </Paper>
     </PageLayout>
   );
 };
