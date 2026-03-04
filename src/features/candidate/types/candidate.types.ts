@@ -61,7 +61,7 @@ export type CandidatePerson = z.infer<typeof candidatePersonSchema>;
 export const guarantorProfileSchema = z.object({
   person: personSchema,
   employmentType: z.enum(employmentTypeValues),
-  income: z.number({ invalid_type_error: 'Le revenu est requis' }).min(0, 'Le revenu doit être positif'),
+  income: z.number().min(0, 'Le revenu doit être positif'),
   documents: z.array(candidateDocumentSchema),
 });
 export type GuarantorProfile = z.infer<typeof guarantorProfileSchema>;
@@ -80,7 +80,7 @@ export const candidateSchema = z.object({
   propertyId: z.string(),
   person: candidatePersonSchema,
   employmentType: z.enum(employmentTypeValues),
-  income: z.number({ invalid_type_error: 'Le revenu est requis' }).min(0, 'Le revenu doit être positif'),
+  income: z.number().min(0, 'Le revenu doit être positif'),
   documents: z.array(candidateDocumentSchema),
   hasGuarantor: z.boolean(),
   guarantor: guarantorProfileSchema.optional(),
@@ -95,9 +95,9 @@ export type Candidate = z.infer<typeof candidateSchema>;
 export const submitCandidateSchema = candidateSchema
   .omit({ id: true, status: true, notes: true, submittedAt: true })
   .extend({
-    gdprConsent: z.literal(true, {
-      errorMap: () => ({ message: 'Vous devez accepter la politique de confidentialité' }),
-    }),
+    gdprConsent: z
+      .boolean()
+      .refine((v) => v === true, { message: 'Vous devez accepter la politique de confidentialité' }),
   });
 export type SubmitCandidateData = z.infer<typeof submitCandidateSchema>;
 
