@@ -123,19 +123,10 @@ const TenancyPage = () => {
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
-        <Typography variant="h5" fontWeight="bold" mb={2}>{tenantName}</Typography>
-        <Divider sx={{ mb: 2 }} />
-        {isEditing ? (
-          <TenancyForm
-            initialValues={tenancy}
-            onSubmit={handleUpdate}
-            onCancel={() => setIsEditing(false)}
-            isLoading={isUpdating}
-            submitLabel="Enregistrer"
-          />
-        ) : (
-          <>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" gap={1} mb={1}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h5" fontWeight="bold">{tenantName}</Typography>
+          {!isEditing && (
+            <Box display="flex" alignItems="center" gap={1}>
               {!isSigned && (
                 <Button
                   variant="contained"
@@ -149,6 +140,19 @@ const TenancyPage = () => {
               )}
               <ActionsMenu items={menuItems} />
             </Box>
+          )}
+        </Box>
+        <Divider sx={{ mb: 2 }} />
+        {isEditing ? (
+          <TenancyForm
+            initialValues={tenancy}
+            onSubmit={handleUpdate}
+            onCancel={() => setIsEditing(false)}
+            isLoading={isUpdating}
+            submitLabel="Enregistrer"
+          />
+        ) : (
+          <>
             <TenancyDetails tenancy={tenancy} />
           </>
         )}

@@ -70,7 +70,17 @@ const PropertyPage = () => {
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
-        <Typography variant="h5" fontWeight="bold" mb={2}>{property.name}</Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <Typography variant="h5" fontWeight="bold">{property.name}</Typography>
+          {!isEditing && (
+            <ActionsMenu
+              items={[
+                { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
+                { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
+              ]}
+            />
+          )}
+        </Box>
         <Divider sx={{ mb: 2 }} />
         {isEditing ? (
           <PropertyForm
@@ -82,14 +92,6 @@ const PropertyPage = () => {
           />
         ) : (
           <>
-            <Box display="flex" justifyContent="flex-end" mb={1}>
-              <ActionsMenu
-                items={[
-                  { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
-                  { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
-                ]}
-              />
-            </Box>
             <PropertyDetails property={property} />
           </>
         )}
