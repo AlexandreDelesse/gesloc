@@ -1,46 +1,18 @@
-import { v4 as uuidv4 } from 'uuid';
-import { mockPayments } from './payment.mock';
 import type { CreatePaymentData, Payment, UpdatePaymentData } from '../types/payment.types';
-import { loadStore, saveStore } from '../../../lib/persistedStore';
-
-const KEY = 'gesloc_payments';
-
-// État local simulant la base de données
-let store: Payment[] = loadStore(KEY, [...mockPayments]);
-
-const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
+import { httpClient } from '../../../lib/http-client';
 
 export const paymentApi = {
-  getByTenancy: async (tenancyId: string): Promise<Payment[]> => {
-    await delay();
-    return store.filter((p) => p.tenancyId === tenancyId);
-  },
+  getByTenancy: async (tenancyId: string): Promise<Payment[]> =>
+    (await httpClient.get(`tenancies/${tenancyId}/payments`)).data,
 
   createBatch: async (data: Omit<CreatePaymentData, 'id'>[]): Promise<Payment[]> => {
-    await delay();
-    const newPayments: Payment[] = data.map((d) => ({
-      ...d,
-      id: uuidv4(),
-      status: d.status ?? 'en_attente',
-    }));
-    store = [...store, ...newPayments];
-    saveStore(KEY, store);
-    return newPayments;
+    const tenancyId = data[0].tenancyId;
+    return (await httpClient.post(`tenancies/${tenancyId}/payments/batch`, data)).data;
   },
 
-  update: async (data: UpdatePaymentData): Promise<Payment> => {
-    await delay();
-    const index = store.findIndex((p) => p.id === data.id);
-    if (index === -1) throw new Error(`Paiement introuvable (id: ${data.id})`);
-    const updated: Payment = { ...store[index], ...data };
-    store = store.map((p) => (p.id === data.id ? updated : p));
-    saveStore(KEY, store);
-    return updated;
-  },
+  update: async (data: UpdatePaymentData): Promise<Payment> =>
+    (await httpClient.put(`payments/${data.id}`, { status: data.status, paidAt: data.paidAt })).data,
 
-  delete: async (id: string): Promise<void> => {
-    await delay();
-    store = store.filter((p) => p.id !== id);
-    saveStore(KEY, store);
-  },
+  delete: async (id: string): Promise<void> =>
+    (await httpClient.delete(`payments/${id}`)).data,
 };
