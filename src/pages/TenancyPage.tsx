@@ -16,7 +16,7 @@ import { useTenancy } from '../features/tenancy/hooks/useTenancy';
 import { useUpdateTenancy } from '../features/tenancy/hooks/useUpdateTenancy';
 import { useDeleteTenancy } from '../features/tenancy/hooks/useDeleteTenancy';
 import { useProperty } from '../features/property/hooks/useProperty';
-import { downloadBailPdf } from '../features/tenancy/pdf/downloadBailPdf';
+import { downloadBailPdf } from '../features/tenancy/pdf/downloadBailPdf.tsx';
 import PaymentTable from '../features/payment/components/PaymentTable';
 import { useCreatePaymentBatch } from '../features/payment/hooks/useCreatePaymentBatch';
 import type { CreateTenancyData } from '../features/tenancy/types/tenancy.types';
