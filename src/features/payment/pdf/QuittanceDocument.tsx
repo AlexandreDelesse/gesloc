@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer';
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import type { Payment } from '../types/payment.types';
 import { formatPeriod, getPaymentTotal } from '../types/payment.types';
 import type { Tenancy } from '../../tenancy/types/tenancy.types';
@@ -186,21 +186,3 @@ const QuittanceDocument = ({ payment, tenancy, property }: QuittanceDocumentProp
 };
 
 export default QuittanceDocument;
-
-// ─── Utilitaire de téléchargement ────────────────────────────────────────────
-
-export const downloadQuittancePdf = async (
-  payment: Payment,
-  tenancy: Tenancy,
-  property: Property,
-): Promise<void> => {
-  const blob = await pdf(
-    <QuittanceDocument payment={payment} tenancy={tenancy} property={property} />,
-  ).toBlob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `quittance-${payment.period}-${tenancy.tenant.lastName.toLowerCase()}.pdf`;
-  a.click();
-  URL.revokeObjectURL(url);
-};

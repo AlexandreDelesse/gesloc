@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { Button, CircularProgress, Divider, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Paper, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,7 +16,7 @@ import { useTenancy } from '../features/tenancy/hooks/useTenancy';
 import { useUpdateTenancy } from '../features/tenancy/hooks/useUpdateTenancy';
 import { useDeleteTenancy } from '../features/tenancy/hooks/useDeleteTenancy';
 import { useProperty } from '../features/property/hooks/useProperty';
-import { downloadBailPdf } from '../features/tenancy/pdf/BailDocument';
+import { downloadBailPdf } from '../features/tenancy/pdf/downloadBailPdf';
 import PaymentTable from '../features/payment/components/PaymentTable';
 import { useCreatePaymentBatch } from '../features/payment/hooks/useCreatePaymentBatch';
 import type { CreateTenancyData } from '../features/tenancy/types/tenancy.types';

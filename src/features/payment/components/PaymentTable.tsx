@@ -26,7 +26,7 @@ import {
 } from '../types/payment.types';
 import { usePaymentsByTenancy } from '../hooks/usePaymentsByTenancy';
 import { useUpdatePayment } from '../hooks/useUpdatePayment';
-import { downloadQuittancePdf } from '../pdf/QuittanceDocument';
+import { downloadQuittancePdf } from '../pdf/downloadQuittancePdf';
 
 interface Props {
   tenancyId: string;
