@@ -1,9 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { mockPayments } from './payment.mock';
 import type { CreatePaymentData, Payment, UpdatePaymentData } from '../types/payment.types';
+import { loadStore, saveStore } from '../../../lib/persistedStore';
+
+const KEY = 'gesloc_payments';
 
 // État local simulant la base de données
-let store: Payment[] = [...mockPayments];
+let store: Payment[] = loadStore(KEY, [...mockPayments]);
 
 const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -21,6 +24,7 @@ export const paymentApi = {
       status: d.status ?? 'en_attente',
     }));
     store = [...store, ...newPayments];
+    saveStore(KEY, store);
     return newPayments;
   },
 
@@ -30,11 +34,13 @@ export const paymentApi = {
     if (index === -1) throw new Error(`Paiement introuvable (id: ${data.id})`);
     const updated: Payment = { ...store[index], ...data };
     store = store.map((p) => (p.id === data.id ? updated : p));
+    saveStore(KEY, store);
     return updated;
   },
 
   delete: async (id: string): Promise<void> => {
     await delay();
     store = store.filter((p) => p.id !== id);
+    saveStore(KEY, store);
   },
 };

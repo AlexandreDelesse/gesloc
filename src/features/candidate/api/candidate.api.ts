@@ -5,10 +5,14 @@ import type {
   CandidateStatus,
   SubmitCandidateData,
 } from '../types/candidate.types';
+import { loadStore, saveStore } from '../../../lib/persistedStore';
+
+const CANDIDATES_KEY = 'gesloc_candidates';
+const LINKS_KEY = 'gesloc_candidate_links';
 
 // État local simulant la base de données — remplacé par axios quand l'API sera prête
-let candidateStore: Candidate[] = [];
-let linkStore: CandidateLink[] = [];
+let candidateStore: Candidate[] = loadStore(CANDIDATES_KEY, []);
+let linkStore: CandidateLink[] = loadStore(LINKS_KEY, []);
 
 const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -29,6 +33,7 @@ export const candidateApi = {
       submittedAt: new Date().toISOString(),
     };
     candidateStore = [...candidateStore, candidate];
+    saveStore(CANDIDATES_KEY, candidateStore);
     return candidate;
   },
 
@@ -56,12 +61,14 @@ export const candidateApi = {
     if (index === -1) throw new Error(`Candidat introuvable (id: ${data.id})`);
     const updated: Candidate = { ...candidateStore[index], ...data };
     candidateStore = candidateStore.map((c) => (c.id === data.id ? updated : c));
+    saveStore(CANDIDATES_KEY, candidateStore);
     return updated;
   },
 
   delete: async (id: string): Promise<void> => {
     await delay();
     candidateStore = candidateStore.filter((c) => c.id !== id);
+    saveStore(CANDIDATES_KEY, candidateStore);
   },
 
   // ─── Link management ─────────────────────────────────────────────────────
@@ -83,6 +90,7 @@ export const candidateApi = {
       createdAt: new Date().toISOString(),
     };
     linkStore = [...linkStore, link];
+    saveStore(LINKS_KEY, linkStore);
     return link;
   },
 
@@ -95,6 +103,7 @@ export const candidateApi = {
       isActive: !linkStore[index].isActive,
     };
     linkStore = linkStore.map((l) => (l.propertyId === propertyId ? updated : l));
+    saveStore(LINKS_KEY, linkStore);
     return updated;
   },
 };
