@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer';
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import type { Tenancy } from '../types/tenancy.types';
 import { getTenancyEndDate } from '../types/tenancy.types';
 import type { Property } from '../../property/types/property.types';
@@ -246,15 +246,3 @@ const BailDocument = ({ tenancy, property }: BailDocumentProps) => {
 };
 
 export default BailDocument;
-
-// ─── Utilitaire de téléchargement ────────────────────────────────────────────
-
-export const downloadBailPdf = async (tenancy: Tenancy, property: Property): Promise<void> => {
-  const blob = await pdf(<BailDocument tenancy={tenancy} property={property} />).toBlob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `bail-${tenancy.tenant.lastName.toLowerCase()}.pdf`;
-  a.click();
-  URL.revokeObjectURL(url);
-};
