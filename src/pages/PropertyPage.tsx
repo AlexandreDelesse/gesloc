@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PageLayout from '../components/layout/PageLayout';
+import ActionsMenu from '../components/ui/ActionsMenu';
 import PropertyDetails from '../features/property/components/PropertyDetails';
 import PropertyForm from '../features/property/components/PropertyForm';
 import DeletePropertyDialog from '../features/property/components/DeletePropertyDialog';
@@ -64,9 +65,19 @@ const PropertyPage = () => {
     <PageLayout
       title={property.name}
       actions={
-        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/')}>
-          Retour
-        </Button>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate('/')}>
+            Retour
+          </Button>
+          {!isEditing && (
+            <ActionsMenu
+              items={[
+                { label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) },
+                { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' },
+              ]}
+            />
+          )}
+        </Stack>
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
@@ -79,22 +90,7 @@ const PropertyPage = () => {
             submitLabel="Enregistrer"
           />
         ) : (
-          <>
-            <PropertyDetails property={property} />
-            <Stack direction="row" gap={2} mt={3}>
-              <Button variant="outlined" startIcon={<EditIcon />} onClick={() => setIsEditing(true)}>
-                Modifier
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={() => setDeleteDialogOpen(true)}
-              >
-                Supprimer
-              </Button>
-            </Stack>
-          </>
+          <PropertyDetails property={property} />
         )}
       </Paper>
 

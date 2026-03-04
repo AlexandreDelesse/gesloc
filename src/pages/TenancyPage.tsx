@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import GavelIcon from '@mui/icons-material/Gavel';
 import PageLayout from '../components/layout/PageLayout';
+import ActionsMenu from '../components/ui/ActionsMenu';
 import TenancyDetails from '../features/tenancy/components/TenancyDetails';
 import TenancyForm from '../features/tenancy/components/TenancyForm';
 import DeleteTenancyDialog from '../features/tenancy/components/DeleteTenancyDialog';
@@ -106,16 +107,34 @@ const TenancyPage = () => {
   const tenantName = `${tenancy.tenant.firstName} ${tenancy.tenant.lastName}`;
   const isSigned = tenancy.status === 'signé';
 
+  const menuItems = [
+    ...(!isSigned ? [{ label: 'Modifier', icon: <EditIcon />, onClick: () => setIsEditing(true) }] : []),
+    { label: 'Télécharger le bail', icon: <DownloadIcon />, onClick: handleDownloadPdf, disabled: !property },
+    ...(isSigned && tenancy.signedDocument ? [{ label: 'Voir le bail signé', icon: <DownloadIcon />, onClick: handleDownloadSigned }] : []),
+    { label: 'Supprimer', icon: <DeleteIcon />, onClick: () => setDeleteDialogOpen(true), color: 'error' as const },
+  ];
+
   return (
     <PageLayout
       title={tenantName}
       actions={
-        <Button
-          startIcon={<ArrowBackIcon />}
-          onClick={() => navigate(`/property/${propertyId}`)}
-        >
-          Retour
-        </Button>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`/property/${propertyId}`)}>
+            Retour
+          </Button>
+          {!isSigned && !isEditing && (
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              startIcon={<GavelIcon />}
+              onClick={() => setSignDialogOpen(true)}
+            >
+              Signer
+            </Button>
+          )}
+          {!isEditing && <ActionsMenu items={menuItems} />}
+        </Stack>
       }
     >
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
@@ -128,56 +147,7 @@ const TenancyPage = () => {
             submitLabel="Enregistrer"
           />
         ) : (
-          <>
-            <TenancyDetails tenancy={tenancy} />
-            <Stack direction="row" gap={2} mt={3} flexWrap="wrap">
-              {!isSigned && (
-                <Button
-                  variant="outlined"
-                  startIcon={<EditIcon />}
-                  onClick={() => setIsEditing(true)}
-                >
-                  Modifier
-                </Button>
-              )}
-              <Button
-                variant="outlined"
-                startIcon={<DownloadIcon />}
-                onClick={handleDownloadPdf}
-                disabled={!property}
-              >
-                Télécharger le bail
-              </Button>
-              {!isSigned && (
-                <Button
-                  variant="contained"
-                  color="success"
-                  startIcon={<GavelIcon />}
-                  onClick={() => setSignDialogOpen(true)}
-                >
-                  Signer le bail
-                </Button>
-              )}
-              {isSigned && tenancy.signedDocument && (
-                <Button
-                  variant="outlined"
-                  color="info"
-                  startIcon={<DownloadIcon />}
-                  onClick={handleDownloadSigned}
-                >
-                  Voir le bail signé
-                </Button>
-              )}
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={() => setDeleteDialogOpen(true)}
-              >
-                Supprimer
-              </Button>
-            </Stack>
-          </>
+          <TenancyDetails tenancy={tenancy} />
         )}
       </Paper>
 
