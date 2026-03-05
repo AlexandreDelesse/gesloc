@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSnackbar } from 'notistack';
 import {
   Alert,
   Box,
@@ -32,6 +33,7 @@ interface Props {
 
 const CandidateLinkDialog = ({ open, onClose, propertyId, propertyName }: Props) => {
   const [copied, setCopied] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data: link, isLoading } = useCandidateLink(propertyId);
   const { mutate: createLink, isPending: isCreating } = useCreateCandidateLink(propertyId);
@@ -46,6 +48,8 @@ const CandidateLinkDialog = ({ open, onClose, propertyId, propertyName }: Props)
     navigator.clipboard.writeText(candidatureUrl).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      enqueueSnackbar('Impossible de copier le lien. Copiez-le manuellement.', { variant: 'error' });
     });
   };
 

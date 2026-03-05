@@ -7,8 +7,14 @@ interface Props {
 
 const PropertyDetails = ({ property }: Props) => {
   const { owner, address, surface, image } = property;
-  const ownerName = `${owner.firstName} ${owner.lastName}`;
-  const addressLine = `${address.number ? address.number + ' ' : ''}${address.street}, ${address.postCode} ${address.city}`;
+  const ownerName = `${owner?.firstName ?? ''} ${owner?.lastName ?? ''}`.trim();
+  const addressLine = [
+    address?.number ? String(address.number) : null,
+    address?.street,
+    address?.postCode && address?.city ? `${address.postCode} ${address.city}` : null,
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   return (
     <Stack gap={1}>
@@ -20,12 +26,12 @@ const PropertyDetails = ({ property }: Props) => {
         />
       )}
       <Typography variant="body1">
-        <strong>Propriétaire :</strong> {ownerName}
+        <strong>Propriétaire :</strong> {ownerName || '—'}
       </Typography>
       <Typography variant="body1">
-        <strong>Adresse :</strong> {addressLine}
+        <strong>Adresse :</strong> {addressLine || '—'}
       </Typography>
-      {address.residence && (
+      {address?.residence && (
         <Typography variant="body1">
           <strong>Résidence :</strong> {address.residence}
         </Typography>

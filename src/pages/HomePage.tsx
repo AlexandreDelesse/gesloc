@@ -23,9 +23,12 @@ const HomePage = () => {
           </Button>
         </Box>
         <Divider sx={{ mb: 2 }} />
-        {isLoading && <CircularProgress />}
+        {isLoading && <CircularProgress sx={{ display: 'block', mx: 'auto' }} />}
         {isError && <Typography color="error">Impossible de charger les biens.</Typography>}
-        {properties && (
+        {properties && properties.length === 0 && (
+          <Typography color="text.secondary">Aucun bien enregistré. Ajoutez votre premier bien.</Typography>
+        )}
+        {properties && properties.length > 0 && (
           <PropertyCardList properties={properties} onPropertyClick={handlePropertyClick} />
         )}
       </Paper>

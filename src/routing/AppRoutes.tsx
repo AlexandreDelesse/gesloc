@@ -20,6 +20,7 @@ const AppRoutes = () => {
         <Route path=":id/candidatures/:candidateId" element={<CandidateDetailsPage />} />
       </Route>
       <Route path="candidature/:token" element={<CandidatePage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

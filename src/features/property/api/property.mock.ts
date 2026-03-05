@@ -6,7 +6,7 @@ export const mockProperties: Property[] = [
     name: 'La Parade – Appt 7',
     owner: { lastName: 'NOTARIANNI', firstName: 'Chantal', address: { street: '19 rue Marius Touzet', postCode: '83100', city: 'Toulon' } },
     address: {
-      number: 1600,
+      number: '1600',
       street: 'Route des Milles',
       postCode: '13290',
       city: 'Aix-en-Provence',
@@ -31,7 +31,7 @@ export const mockProperties: Property[] = [
     name: 'B22 Carqueiranne',
     owner: { lastName: 'Dupont', firstName: 'Jean' },
     address: {
-      number: 22,
+      number: '22',
       street: 'Allée des Mimosas',
       postCode: '83320',
       city: 'Carqueiranne',

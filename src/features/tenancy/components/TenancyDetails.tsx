@@ -58,7 +58,7 @@ const TenancyDetails = ({ tenancy }: Props) => {
       </Typography>
 
       <Typography variant="body1">
-        <strong>Durée :</strong> {tenancy.durationMonths} mois (jusqu'au {formatDate(endDate.toISOString().split('T')[0])})
+        <strong>Durée :</strong> {tenancy.durationMonths} mois (jusqu'au {endDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })})
       </Typography>
 
       <Typography variant="body1">

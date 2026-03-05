@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { propertyApi } from '../api/property.api';
 import { PROPERTIES_QUERY_KEY } from './useProperties';
+import { propertyQueryKey } from './useProperty';
 
 export const useDeleteProperty = () => {
   const queryClient = useQueryClient();
@@ -9,8 +10,9 @@ export const useDeleteProperty = () => {
 
   return useMutation({
     mutationFn: (id: string) => propertyApi.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: PROPERTIES_QUERY_KEY });
+      queryClient.removeQueries({ queryKey: propertyQueryKey(id) });
       enqueueSnackbar('Bien supprimé avec succès', { variant: 'success' });
     },
     onError: () => {

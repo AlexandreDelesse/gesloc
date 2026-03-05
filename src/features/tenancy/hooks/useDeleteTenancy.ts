@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { tenancyApi } from '../api/tenancy.api';
 import { tenanciesByPropertyQueryKey } from './useTenanciesByProperty';
+import { tenancyQueryKey } from './useTenancy';
 
 export const useDeleteTenancy = (propertyId: string) => {
   const queryClient = useQueryClient();
@@ -9,8 +10,9 @@ export const useDeleteTenancy = (propertyId: string) => {
 
   return useMutation({
     mutationFn: (id: string) => tenancyApi.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: tenanciesByPropertyQueryKey(propertyId) });
+      queryClient.removeQueries({ queryKey: tenancyQueryKey(id) });
       enqueueSnackbar('Bail supprimé avec succès', { variant: 'success' });
     },
     onError: () => {

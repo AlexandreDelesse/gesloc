@@ -35,7 +35,7 @@ const TenancyCard = ({ tenancy, onClick }: Props) => {
             <Chip label={chipLabel} color={chipColor} size="small" />
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            {formatDate(tenancy.startDate)} → {formatDate(endDate.toISOString().split('T')[0])}
+            {formatDate(tenancy.startDate)} → {endDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {total} €/mois

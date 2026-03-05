@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -11,6 +12,8 @@ import {
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
 interface Props {
   open: boolean;
   isLoading: boolean;
@@ -21,15 +24,26 @@ interface Props {
 const SignTenancyDialog = ({ open, isLoading, onConfirm, onClose }: Props) => {
   const [base64, setBase64] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setFileError(null);
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError('Le fichier dépasse la limite de 10 Mo.');
+      e.target.value = '';
+      return;
+    }
     setFileName(file.name);
     const reader = new FileReader();
     reader.onload = () => {
       setBase64(reader.result as string);
+    };
+    reader.onerror = () => {
+      setFileError('Impossible de lire le fichier. Veuillez réessayer.');
+      setFileName(null);
     };
     reader.readAsDataURL(file);
   };
@@ -41,6 +55,7 @@ const SignTenancyDialog = ({ open, isLoading, onConfirm, onClose }: Props) => {
   const handleClose = () => {
     setBase64(null);
     setFileName(null);
+    setFileError(null);
     onClose();
   };
 
@@ -67,7 +82,8 @@ const SignTenancyDialog = ({ open, isLoading, onConfirm, onClose }: Props) => {
           >
             Choisir un fichier
           </Button>
-          {fileName && (
+          {fileError && <Alert severity="error">{fileError}</Alert>}
+          {fileName && !fileError && (
             <Typography variant="body2" color="text.secondary">
               Fichier sélectionné : {fileName}
             </Typography>

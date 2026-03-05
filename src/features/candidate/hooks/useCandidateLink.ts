@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { candidateApi } from '../api/candidate.api';
 
-export const candidateLinkQueryKey = (propertyId: string) => ['candidate-link', propertyId];
-export const candidateLinkByTokenQueryKey = (token: string) => ['candidate-link-token', token];
+export const candidateLinkQueryKey = (propertyId: string) => ['candidate-link', propertyId] as const;
+export const candidateLinkByTokenQueryKey = (token: string) => ['candidate-link-token', token] as const;
 
 export const useCandidateLink = (propertyId: string) =>
   useQuery({

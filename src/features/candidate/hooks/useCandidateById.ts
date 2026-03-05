@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { candidateApi } from '../api/candidate.api';
 
-export const candidateByIdQueryKey = (id: string) => ['candidate', id];
+export const candidateByIdQueryKey = (id: string) => ['candidate', id] as const;
 
 export const useCandidateById = (id: string) =>
   useQuery({
