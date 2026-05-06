@@ -86,7 +86,7 @@ public class BiensController : ControllerBase
 }
 
 public record CreateBienRequest(
-    Guid BailleurId,
+    Guid? BailleurId,
     string Nom,
     TypeBien Type,
     decimal Surface,
@@ -96,7 +96,7 @@ public record CreateBienRequest(
 );
 
 public record UpdateBienRequest(
-    Guid BailleurId,
+    Guid? BailleurId,
     string Nom,
     TypeBien Type,
     decimal Surface,

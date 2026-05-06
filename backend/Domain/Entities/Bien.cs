@@ -6,7 +6,8 @@ public class Bien
 {
     public Guid Id { get; set; }
     public Guid TenantId { get; set; }
-    public Guid BailleurId { get; set; }
+    // Nullable until Phase 4 adds the Bailleur selector in the frontend form
+    public Guid? BailleurId { get; set; }
     public string Nom { get; set; } = "";
     public TypeBien Type { get; set; }
     public decimal Surface { get; set; }
@@ -16,6 +17,6 @@ public class Bien
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    public Bailleur Bailleur { get; set; } = null!;
+    public Bailleur? Bailleur { get; set; };
     public ICollection<Bail> Baux { get; set; } = [];
 }

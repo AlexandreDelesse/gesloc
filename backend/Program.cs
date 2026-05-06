@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // --- Controllers & API docs ---
-builder.Services.AddControllers();
+// camelCase JSON by default — matches frontend expectations (nom → nom, not Nom)
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

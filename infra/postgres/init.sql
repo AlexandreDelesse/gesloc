@@ -34,7 +34,7 @@ CREATE INDEX idx_bailleurs_tenant ON bailleurs(tenant_id);
 CREATE TABLE biens (
   id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id             UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
-  bailleur_id           UUID NOT NULL REFERENCES bailleurs(id),
+  bailleur_id           UUID REFERENCES bailleurs(id),  -- nullable until Phase 4 adds bailleur selector
   nom                   TEXT NOT NULL,
   type                  TEXT NOT NULL CHECK (type IN ('appartement', 'maison', 'studio', 'autre')),
   surface               NUMERIC(6,2) NOT NULL,
