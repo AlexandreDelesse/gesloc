@@ -1,0 +1,17 @@
+## .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+
+## Secrets & local config
+appsettings.Development.json
+*.db
+*.db-shm
+*.db-wal
+
+## IDE
+.vs/
+.vscode/
+.idea/
+*.DS_Store
