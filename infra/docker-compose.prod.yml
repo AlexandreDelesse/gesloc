@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: gesloc
+      POSTGRES_USER: gesloc
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gesloc"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gesloc_net
+
+  backend:
+    image: alexandredelesse/gesloc-backend:latest
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Database=gesloc;Username=gesloc;Password=${POSTGRES_PASSWORD}"
+      Keycloak__Authority: ${KEYCLOAK_ISSUER}
+      Keycloak__Audience: ${KEYCLOAK_CLIENT_ID}
+      ASPNETCORE_ENVIRONMENT: Production
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - gesloc_net
+
+  frontend:
+    image: alexandredelesse/gesloc-frontend:latest
+    restart: unless-stopped
+    networks:
+      - gesloc_net
+
+networks:
+  gesloc_net:
+    external: true
+
+volumes:
+  postgres_data:
