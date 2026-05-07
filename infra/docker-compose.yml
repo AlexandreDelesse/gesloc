@@ -16,32 +16,11 @@ services:
       timeout: 5s
       retries: 5
 
-  # Keycloak auto-imports gesloc-realm.json on first start (--import-realm flag).
-  # On subsequent starts the realm already exists — import is silently skipped.
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.0
-    command: start-dev --import-realm
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_DB: dev-file
-    volumes:
-      - ./keycloak/gesloc-realm.json:/opt/keycloak/data/import/gesloc-realm.json:ro
-      - keycloak_data:/opt/keycloak/data
-    ports:
-      - "8180:8080"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:8080/realms/gesloc || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-
   backend:
     build: ../backend
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Database=gesloc;Username=gesloc;Password=${POSTGRES_PASSWORD}"
-      Keycloak__Authority: http://keycloak:8080/realms/gesloc
+      Keycloak__Authority: ${KEYCLOAK_ISSUER}
       Keycloak__Audience: gesloc-frontend
       ASPNETCORE_ENVIRONMENT: Development
     ports:
@@ -49,19 +28,17 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      keycloak:
-        condition: service_healthy
 
   frontend:
-    build: ../frontend
+    build:
+      context: ../frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+        VITE_KEYCLOAK_URL: ${KEYCLOAK_URL}
+        VITE_KEYCLOAK_REALM: gesloc
+        VITE_KEYCLOAK_CLIENT_ID: gesloc-frontend
     ports:
       - "80:80"
-    environment:
-      VITE_API_URL: http://localhost:8080
-      VITE_KEYCLOAK_URL: http://localhost:8180
-      VITE_KEYCLOAK_REALM: gesloc
-      VITE_KEYCLOAK_CLIENT_ID: gesloc-frontend
 
 volumes:
   postgres_data:
-  keycloak_data:

@@ -43,6 +43,15 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Apply pending EF Core migrations automatically on startup.
+// Idempotent: skips migrations that are already applied.
+// To generate a new migration: dotnet ef migrations add <Name> (see infra/scripts/migrate.sh)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
